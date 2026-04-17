@@ -1,0 +1,4 @@
+interface:
+  display_name: "local-source-git"
+  short_description: "Create and use a local source-only git repo in a large non-git workspace"
+  default_prompt: "Set up or use a local source-only git repo rooted at the project root, with a separate relative git dir and source-focused tracking."
