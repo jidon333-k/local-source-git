@@ -90,14 +90,136 @@ git -C "$project_root" symbolic-ref HEAD "refs/heads/$initial_branch"
 exclude_file="$git_dir_abs/info/exclude"
 mkdir -p "$(dirname "$exclude_file")"
 cat > "$exclude_file" <<'EOF'
+# Local source-only git: ignore everything by default, then allow only UE source trees.
+
+/*
+
+!/Tsl/
+!/Engine/
+
 /_Package/
 /output/
 /Saved/
 /Intermediate/
 /Binaries/
-**/Saved/
-**/Intermediate/
-**/Binaries/
+
+# Tsl root: allow Source and plugin traversal only
+/Tsl/*
+!/Tsl/Source/
+!/Tsl/Plugins/
+
+/Tsl/Binaries/
+/Tsl/Intermediate/
+/Tsl/Saved/
+
+# Tsl source: allow only common source file extensions
+/Tsl/Source/**
+!/Tsl/Source/**/
+!/Tsl/Source/**/*.h
+!/Tsl/Source/**/*.hh
+!/Tsl/Source/**/*.hpp
+!/Tsl/Source/**/*.hxx
+!/Tsl/Source/**/*.inl
+!/Tsl/Source/**/*.inc
+!/Tsl/Source/**/*.ipp
+!/Tsl/Source/**/*.c
+!/Tsl/Source/**/*.cc
+!/Tsl/Source/**/*.cpp
+!/Tsl/Source/**/*.cxx
+!/Tsl/Source/**/*.m
+!/Tsl/Source/**/*.mm
+!/Tsl/Source/**/*.ixx
+!/Tsl/Source/**/*.cppm
+!/Tsl/Source/**/*.cs
+!/Tsl/Source/**/*.rc
+!/Tsl/Source/**/*.def
+
+# Tsl plugins: allow only Source trees and source file extensions
+/Tsl/Plugins/**
+!/Tsl/Plugins/**/
+!/Tsl/Plugins/**/Source/
+!/Tsl/Plugins/**/Source/**/
+!/Tsl/Plugins/**/Source/**/*.h
+!/Tsl/Plugins/**/Source/**/*.hh
+!/Tsl/Plugins/**/Source/**/*.hpp
+!/Tsl/Plugins/**/Source/**/*.hxx
+!/Tsl/Plugins/**/Source/**/*.inl
+!/Tsl/Plugins/**/Source/**/*.inc
+!/Tsl/Plugins/**/Source/**/*.ipp
+!/Tsl/Plugins/**/Source/**/*.c
+!/Tsl/Plugins/**/Source/**/*.cc
+!/Tsl/Plugins/**/Source/**/*.cpp
+!/Tsl/Plugins/**/Source/**/*.cxx
+!/Tsl/Plugins/**/Source/**/*.m
+!/Tsl/Plugins/**/Source/**/*.mm
+!/Tsl/Plugins/**/Source/**/*.ixx
+!/Tsl/Plugins/**/Source/**/*.cppm
+!/Tsl/Plugins/**/Source/**/*.cs
+!/Tsl/Plugins/**/Source/**/*.rc
+!/Tsl/Plugins/**/Source/**/*.def
+
+/Tsl/Plugins/**/Binaries/
+/Tsl/Plugins/**/Intermediate/
+/Tsl/Plugins/**/Saved/
+
+# Engine root: allow Source and plugin traversal only
+/Engine/*
+!/Engine/Source/
+!/Engine/Plugins/
+
+/Engine/Binaries/
+/Engine/Intermediate/
+/Engine/Saved/
+
+# Engine source: allow only common source file extensions
+/Engine/Source/**
+!/Engine/Source/**/
+!/Engine/Source/**/*.h
+!/Engine/Source/**/*.hh
+!/Engine/Source/**/*.hpp
+!/Engine/Source/**/*.hxx
+!/Engine/Source/**/*.inl
+!/Engine/Source/**/*.inc
+!/Engine/Source/**/*.ipp
+!/Engine/Source/**/*.c
+!/Engine/Source/**/*.cc
+!/Engine/Source/**/*.cpp
+!/Engine/Source/**/*.cxx
+!/Engine/Source/**/*.m
+!/Engine/Source/**/*.mm
+!/Engine/Source/**/*.ixx
+!/Engine/Source/**/*.cppm
+!/Engine/Source/**/*.cs
+!/Engine/Source/**/*.rc
+!/Engine/Source/**/*.def
+
+# Engine plugins: allow only Source trees and source file extensions
+/Engine/Plugins/**
+!/Engine/Plugins/**/
+!/Engine/Plugins/**/Source/
+!/Engine/Plugins/**/Source/**/
+!/Engine/Plugins/**/Source/**/*.h
+!/Engine/Plugins/**/Source/**/*.hh
+!/Engine/Plugins/**/Source/**/*.hpp
+!/Engine/Plugins/**/Source/**/*.hxx
+!/Engine/Plugins/**/Source/**/*.inl
+!/Engine/Plugins/**/Source/**/*.inc
+!/Engine/Plugins/**/Source/**/*.ipp
+!/Engine/Plugins/**/Source/**/*.c
+!/Engine/Plugins/**/Source/**/*.cc
+!/Engine/Plugins/**/Source/**/*.cpp
+!/Engine/Plugins/**/Source/**/*.cxx
+!/Engine/Plugins/**/Source/**/*.m
+!/Engine/Plugins/**/Source/**/*.mm
+!/Engine/Plugins/**/Source/**/*.ixx
+!/Engine/Plugins/**/Source/**/*.cppm
+!/Engine/Plugins/**/Source/**/*.cs
+!/Engine/Plugins/**/Source/**/*.rc
+!/Engine/Plugins/**/Source/**/*.def
+
+/Engine/Plugins/**/Binaries/
+/Engine/Plugins/**/Intermediate/
+/Engine/Plugins/**/Saved/
 EOF
 
 cat <<EOF
@@ -112,4 +234,6 @@ Suggested next steps:
   git add Tsl/Plugins/*/Source
   git add Engine/Source
   git add Engine/Plugins/*/Source
+
+The default exclude rules keep this repo source-only.
 EOF

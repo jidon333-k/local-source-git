@@ -10,7 +10,7 @@ Use this skill when the workspace is not officially managed by git, but you stil
 This workflow is for:
 - separating probe or test harness code from submit candidates
 - keeping local-only history in a Perforce workspace
-- tracking only the source paths you explicitly add
+- tracking only the source trees you explicitly add
 
 Do not use this to replace the official SCM. This is a local helper layer only.
 
@@ -34,13 +34,14 @@ The script will:
 - write a relative `gitdir:` pointer in `.git`
 - make the repo readable from both WSL and Windows tools
 - set local defaults for source-only usage
-- populate a local exclude file for common generated/build outputs
+- populate a local exclude file that ignores the workspace by default and re-allows only common UE source trees
 
 If the project root already points to a different git dir, stop and resolve that first.
 
 ## Track Only Source
 
-This workflow is source-first. Add only the paths you want to track.
+This workflow is source-only. Add only `Source` trees you want to track.
+Do not add project metadata or workflow files such as `.uproject`, `.uplugin`, `AGENTS.md`, or `NEXT.md`.
 
 Typical add examples:
 
@@ -49,7 +50,6 @@ git add Tsl/Source
 git add Tsl/Plugins/*/Source
 git add Engine/Source
 git add Engine/Plugins/*/Source
-git add *.uproject *.uplugin *.Build.cs *.Target.cs
 ```
 
 Prefer smaller, task-relevant adds over tracking the whole tree.
@@ -97,5 +97,5 @@ When using a separate git dir, GUI tools should be pointed at the project root, 
 
 - Never add local-source-git metadata to Perforce.
 - Keep explanations and commands project-root-relative when possible.
-- Do not rely on this repo for generated outputs; it is for local source history.
+- Do not rely on this repo for generated outputs or project metadata; it is for local source history only.
 - After cleanup, verify the fix-only branch still builds before using it as the submit candidate view.
